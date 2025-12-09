@@ -5,9 +5,10 @@ A production-ready full-stack application template designed to help developers q
 ## Example Application: Tutoring Company Admin
 
 This template includes a fully functional tutoring company admin dashboard as a reference implementation. The example demonstrates:
+
 - User authentication (email/password + Google OAuth)
-- Payment tracking and management
-- Student account management
+- Payment tracking and management (example)
+- Student account management (example)
 - Protected routes and role-based access
 
 > **Note:** The example code is meant to showcase the template's capabilities. Replace or extend it with your own business logic.
@@ -18,20 +19,21 @@ This template includes a fully functional tutoring company admin dashboard as a 
 
 ### Frontend
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Next.js** | 16.0.7 | React framework with App Router and Server Components |
-| **React** | 19.2.0 | UI library |
-| **TypeScript** | 5.x | Type-safe JavaScript |
-| **Tailwind CSS** | 4.0 | Utility-first CSS framework |
-| **Radix UI** | Latest | Accessible, unstyled UI primitives |
-| **Lucide React** | 0.556.0 | Icon library |
-| **better-auth** | 1.4.5 | Authentication client |
-| **Class Variance Authority** | 0.7.1 | Component variant management |
-| **clsx** | 2.1.1 | Conditional class names |
-| **tailwind-merge** | 3.4.0 | Merge Tailwind classes |
+| Technology                   | Version | Purpose                                               |
+| ---------------------------- | ------- | ----------------------------------------------------- |
+| **Next.js**                  | 16.0.7  | React framework with App Router and Server Components |
+| **React**                    | 19.2.0  | UI library                                            |
+| **TypeScript**               | 5.x     | Type-safe JavaScript                                  |
+| **Tailwind CSS**             | 4.0     | Utility-first CSS framework                           |
+| **Radix UI**                 | Latest  | Accessible, unstyled UI primitives                    |
+| **Lucide React**             | 0.556.0 | Icon library                                          |
+| **better-auth**              | 1.4.5   | Authentication client                                 |
+| **Class Variance Authority** | 0.7.1   | Component variant management                          |
+| **clsx**                     | 2.1.1   | Conditional class names                               |
+| **tailwind-merge**           | 3.4.0   | Merge Tailwind classes                                |
 
 #### Frontend Structure
+
 ```
 frontend/
 ├── src/
@@ -67,18 +69,19 @@ frontend/
 
 ### Backend
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **NestJS** | 11.0.1 | Progressive Node.js framework |
-| **TypeScript** | 5.7.3 | Type-safe JavaScript |
-| **Prisma** | 7.1.0 | Next-generation ORM |
-| **PostgreSQL** | - | Relational database |
-| **better-auth** | 1.4.5 | Authentication library |
-| **@thallesp/nestjs-better-auth** | 2.2.0 | NestJS auth integration |
-| **RxJS** | 7.8.1 | Reactive programming |
-| **@nestjs/config** | 4.0.2 | Environment configuration |
+| Technology                       | Version | Purpose                       |
+| -------------------------------- | ------- | ----------------------------- |
+| **NestJS**                       | 11.0.1  | Progressive Node.js framework |
+| **TypeScript**                   | 5.7.3   | Type-safe JavaScript          |
+| **Prisma**                       | 7.1.0   | Next-generation ORM           |
+| **PostgreSQL**                   | -       | Relational database           |
+| **better-auth**                  | 1.4.5   | Authentication library        |
+| **@thallesp/nestjs-better-auth** | 2.2.0   | NestJS auth integration       |
+| **RxJS**                         | 7.8.1   | Reactive programming          |
+| **@nestjs/config**               | 4.0.2   | Environment configuration     |
 
 #### Backend Structure
+
 ```
 backend/
 ├── src/
@@ -112,24 +115,26 @@ backend/
 The template uses **Prisma ORM** with **PostgreSQL**. The example schema includes:
 
 #### Authentication Tables (better-auth)
+
 - **User** - User accounts with email, name, role
 - **Session** - Active user sessions
 - **Account** - OAuth provider data (Google, etc.)
 - **Verification** - Email/identity verification tokens
 
 #### Example Business Tables
+
 - **Payment** - Payment records with date, time, amount, status
 - **Student** - Student accounts with auto-generated credentials
 
 ### Development & Testing Tools
 
-| Tool | Version | Purpose |
-|------|---------|---------|
-| **Jest** | 30.0.0 | Unit and E2E testing |
-| **ESLint** | 9.18.0 | Code linting |
-| **Prettier** | 3.4.2 | Code formatting |
-| **ts-jest** | 29.2.5 | TypeScript Jest integration |
-| **supertest** | 7.0.0 | HTTP assertions |
+| Tool          | Version | Purpose                     |
+| ------------- | ------- | --------------------------- |
+| **Jest**      | 30.0.0  | Unit and E2E testing        |
+| **ESLint**    | 9.18.0  | Code linting                |
+| **Prettier**  | 3.4.2   | Code formatting             |
+| **ts-jest**   | 29.2.5  | TypeScript Jest integration |
+| **supertest** | 7.0.0   | HTTP assertions             |
 
 ---
 
@@ -138,10 +143,12 @@ The template uses **Prisma ORM** with **PostgreSQL**. The example schema include
 This template uses **better-auth** for authentication, providing:
 
 ### Supported Authentication Methods
+
 - **Email/Password** - Traditional email and password login
 - **Google OAuth** - Social login with Google
 
 ### Features
+
 - Session-based authentication with secure HTTP-only cookies
 - Automatic session management
 - Protected route middleware
@@ -150,7 +157,9 @@ This template uses **better-auth** for authentication, providing:
 - Secure cookie configuration
 
 ### Configuration
+
 Authentication is configured in `backend/src/auth.ts`:
+
 ```typescript
 export const auth = betterAuth({
   database: prismaAdapter(prisma, { provider: 'postgresql' }),
@@ -175,44 +184,50 @@ export const auth = betterAuth({
 ## API Endpoints
 
 ### Core Endpoints
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/` | Health check |
-| GET | `/me` | Get authenticated user profile |
+
+| Method | Endpoint | Description                    |
+| ------ | -------- | ------------------------------ |
+| GET    | `/`      | Health check                   |
+| GET    | `/me`    | Get authenticated user profile |
 
 ### Authentication (better-auth)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/sign-up/email` | Register with email/password |
-| POST | `/api/auth/sign-in/email` | Login with email/password |
-| GET | `/api/auth/sign-in/social` | Initiate OAuth flow |
-| POST | `/api/auth/sign-out` | Sign out user |
-| GET | `/api/auth/session` | Get current session |
+
+| Method | Endpoint                   | Description                  |
+| ------ | -------------------------- | ---------------------------- |
+| POST   | `/api/auth/sign-up/email`  | Register with email/password |
+| POST   | `/api/auth/sign-in/email`  | Login with email/password    |
+| GET    | `/api/auth/sign-in/social` | Initiate OAuth flow          |
+| POST   | `/api/auth/sign-out`       | Sign out user                |
+| GET    | `/api/auth/session`        | Get current session          |
 
 ### Example Endpoints (Payments)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/payments` | Create a payment |
-| GET | `/payments` | Get all unpaid payments |
-| PATCH | `/payments/:id` | Update payment details |
-| PATCH | `/payments/:id/paid` | Mark payment as paid |
+
+| Method | Endpoint             | Description             |
+| ------ | -------------------- | ----------------------- |
+| POST   | `/payments`          | Create a payment        |
+| GET    | `/payments`          | Get all unpaid payments |
+| PATCH  | `/payments/:id`      | Update payment details  |
+| PATCH  | `/payments/:id/paid` | Mark payment as paid    |
 
 ### Example Endpoints (Students)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/students` | Create a student |
-| GET | `/students` | Get all students |
+
+| Method | Endpoint    | Description      |
+| ------ | ----------- | ---------------- |
+| POST   | `/students` | Create a student |
+| GET    | `/students` | Get all students |
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v18+ recommended)
 - PostgreSQL database
 - Google OAuth credentials (optional, for social login)
 
 ### 1. Clone the Repository
+
 ```bash
 git clone <repository-url>
 cd mindcapsule-template-platform
@@ -231,6 +246,7 @@ cp .env.local.example .env.local
 ```
 
 Configure your `.env.local`:
+
 ```env
 # Database
 DATABASE_URL="postgresql://user:password@localhost:5432/myapp"
@@ -274,6 +290,7 @@ npm run dev
 ```
 
 ### 4. Access the Application
+
 - **Frontend:** http://localhost:3000
 - **Backend API:** http://localhost:3001
 
@@ -282,6 +299,7 @@ npm run dev
 ## Available Scripts
 
 ### Backend
+
 ```bash
 npm run start:dev     # Start development server with hot reload
 npm run build         # Build for production (runs migrations + Prisma generate)
@@ -297,6 +315,7 @@ npm run db:push       # Push schema changes (development)
 ```
 
 ### Frontend
+
 ```bash
 npm run dev           # Start development server
 npm run build         # Build for production
@@ -309,7 +328,9 @@ npm run lint          # Lint code
 ## Customizing the Template
 
 ### 1. Update Database Schema
+
 Edit `backend/prisma/schema.prisma` to define your data models:
+
 ```prisma
 model YourModel {
   id        String   @id @default(cuid())
@@ -320,12 +341,15 @@ model YourModel {
 ```
 
 Run migrations:
+
 ```bash
 npx prisma migrate dev --name your_migration_name
 ```
 
 ### 2. Create New API Modules
+
 Use NestJS CLI to generate modules:
+
 ```bash
 nest generate module your-module
 nest generate controller your-module
@@ -333,7 +357,9 @@ nest generate service your-module
 ```
 
 ### 3. Add New Frontend Pages
+
 Create new pages in `frontend/src/app/dashboard/`:
+
 ```
 dashboard/
 └── your-page/
@@ -341,12 +367,15 @@ dashboard/
 ```
 
 ### 4. Add UI Components
+
 This template uses **shadcn/ui**. Add new components:
+
 ```bash
 npx shadcn@latest add component-name
 ```
 
 ### 5. Update Navigation
+
 Edit `frontend/src/components/dashboard/sidebar.tsx` to add new navigation items.
 
 ---
@@ -354,21 +383,23 @@ Edit `frontend/src/components/dashboard/sidebar.tsx` to add new navigation items
 ## Environment Variables
 
 ### Backend
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `PORT` | No | Server port (default: 3001) |
-| `NODE_ENV` | No | Environment (development/production) |
-| `BACKEND_URL` | Yes | Backend server URL |
-| `FRONTEND_URL` | Yes | Frontend URL for CORS |
-| `BETTER_AUTH_SECRET` | Yes | Secret for session signing |
-| `GOOGLE_CLIENT_ID` | No | Google OAuth client ID |
-| `GOOGLE_CLIENT_SECRET` | No | Google OAuth client secret |
+
+| Variable               | Required | Description                          |
+| ---------------------- | -------- | ------------------------------------ |
+| `DATABASE_URL`         | Yes      | PostgreSQL connection string         |
+| `PORT`                 | No       | Server port (default: 3001)          |
+| `NODE_ENV`             | No       | Environment (development/production) |
+| `BACKEND_URL`          | Yes      | Backend server URL                   |
+| `FRONTEND_URL`         | Yes      | Frontend URL for CORS                |
+| `BETTER_AUTH_SECRET`   | Yes      | Secret for session signing           |
+| `GOOGLE_CLIENT_ID`     | No       | Google OAuth client ID               |
+| `GOOGLE_CLIENT_SECRET` | No       | Google OAuth client secret           |
 
 ### Frontend
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXT_PUBLIC_API_URL` | Yes | Backend API URL |
+
+| Variable              | Required | Description     |
+| --------------------- | -------- | --------------- |
+| `NEXT_PUBLIC_API_URL` | Yes      | Backend API URL |
 
 ---
 
