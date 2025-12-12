@@ -6,12 +6,14 @@ import { prisma } from "./prisma";
 const isProduction = process.env.NODE_ENV === "production";
 
 export const auth = betterAuth({
-  baseURL: process.env.BACKEND_URL || "http://localhost:3001",
+  // Use FRONTEND_URL as baseURL so OAuth callbacks go through the frontend proxy
+  // This keeps all cookies on the frontend domain (first-party)
+  baseURL: process.env.FRONTEND_URL || "http://localhost:3000",
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
   emailAndPassword: {
-    enabled: true,
+    enabled: false,
   },
   socialProviders: {
     google: {
@@ -19,12 +21,18 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-  trustedOrigins: [process.env.FRONTEND_URL || "http://localhost:3000"],
+  trustedOrigins: [
+    process.env.FRONTEND_URL || "http://localhost:3000",
+    process.env.BACKEND_URL || "http://localhost:3001",
+  ],
   advanced: {
+    // Disable __Secure- prefix which can cause issues with state cookies
+    useSecureCookies: false,
     defaultCookieAttributes: {
-      secure: isProduction,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       httpOnly: true,
+      path: "/",
     },
   },
   user: {
