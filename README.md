@@ -31,6 +31,7 @@ This template includes a fully functional tutoring company admin dashboard as a 
 | **Class Variance Authority** | 0.7.1   | Component variant management                          |
 | **clsx**                     | 2.1.1   | Conditional class names                               |
 | **tailwind-merge**           | 3.4.0   | Merge Tailwind classes                                |
+| **PostHog**                  | Latest  | Product analytics and event tracking                  |
 
 #### Frontend Structure
 
@@ -61,6 +62,7 @@ frontend/
 │   ├── lib/
 │   │   ├── auth-client.ts      # better-auth client configuration
 │   │   └── utils.ts            # Utility functions (cn helper)
+│   ├── instrumentation-client.ts # PostHog analytics initialization
 │   └── middleware.ts           # Route protection middleware
 ├── components.json             # shadcn/ui configuration
 ├── tailwind.config.ts          # Tailwind configuration
@@ -144,8 +146,8 @@ This template uses **better-auth** for authentication, providing:
 
 ### Supported Authentication Methods
 
-- **Email/Password** - Traditional email and password login
 - **Google OAuth** - Social login with Google
+- **Email/Password** - Can be enabled in configuration
 
 ### Features
 
@@ -162,15 +164,19 @@ Authentication is configured in `backend/src/auth.ts`:
 
 ```typescript
 export const auth = betterAuth({
+  baseURL: process.env.FRONTEND_URL || "http://localhost:3000",
   database: prismaAdapter(prisma, { provider: 'postgresql' }),
-  emailAndPassword: { enabled: true },
+  emailAndPassword: { enabled: false }, // Enable if needed
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
   },
-  trustedOrigins: [process.env.FRONTEND_URL || 'http://localhost:3000'],
+  trustedOrigins: [
+    process.env.FRONTEND_URL || 'http://localhost:3000',
+    process.env.BACKEND_URL || 'http://localhost:3001',
+  ],
   user: {
     additionalFields: {
       role: { type: 'string', defaultValue: 'tutor' },
@@ -178,6 +184,35 @@ export const auth = betterAuth({
   },
 });
 ```
+
+---
+
+## Analytics
+
+This template includes **PostHog** for product analytics and event tracking.
+
+### Setup
+
+1. Create a PostHog account at [posthog.com](https://posthog.com)
+2. Create a new project and copy your project API key
+3. Add the environment variables to your frontend `.env.local`:
+
+```env
+NEXT_PUBLIC_POSTHOG_KEY="your-posthog-project-api-key"
+NEXT_PUBLIC_POSTHOG_HOST="https://us.i.posthog.com"
+```
+
+### Features
+
+- Automatic page view tracking
+- User identification (integrates with authentication)
+- Custom event tracking
+- Session recording (configurable in PostHog dashboard)
+- Feature flags support
+
+### Configuration
+
+PostHog is initialized in `frontend/src/instrumentation-client.ts`. You can customize initialization options as needed.
 
 ---
 
@@ -282,8 +317,12 @@ cd frontend
 # Install dependencies
 npm install
 
-# Copy environment template (if exists) or create .env.local
-echo 'NEXT_PUBLIC_API_URL="http://localhost:3001"' > .env.local
+# Create .env.local with required variables
+cat > .env.local << 'EOF'
+NEXT_PUBLIC_API_URL="http://localhost:3001"
+NEXT_PUBLIC_POSTHOG_KEY="your-posthog-project-api-key"
+NEXT_PUBLIC_POSTHOG_HOST="https://us.i.posthog.com"
+EOF
 
 # Start development server
 npm run dev
@@ -397,9 +436,11 @@ Edit `frontend/src/components/dashboard/sidebar.tsx` to add new navigation items
 
 ### Frontend
 
-| Variable              | Required | Description     |
-| --------------------- | -------- | --------------- |
-| `NEXT_PUBLIC_API_URL` | Yes      | Backend API URL |
+| Variable                   | Required | Description                                      |
+| -------------------------- | -------- | ------------------------------------------------ |
+| `NEXT_PUBLIC_API_URL`      | Yes      | Backend API URL                                  |
+| `NEXT_PUBLIC_POSTHOG_KEY`  | Yes      | PostHog project API key for analytics            |
+| `NEXT_PUBLIC_POSTHOG_HOST` | No       | PostHog host URL (default: https://us.i.posthog.com) |
 
 ---
 
@@ -431,7 +472,8 @@ mindcapsule-template-platform/
 
 - **Modern Stack**: Next.js 16 + React 19 + NestJS 11 + Prisma 7
 - **Type Safety**: Full TypeScript across frontend and backend
-- **Authentication**: Pre-configured with better-auth (email + OAuth)
+- **Authentication**: Pre-configured with better-auth (Google OAuth)
+- **Analytics**: PostHog integration for product analytics and event tracking
 - **Database Ready**: Prisma ORM with PostgreSQL support
 - **UI Components**: shadcn/ui with Radix UI primitives
 - **Styling**: Tailwind CSS v4 with modern configuration
