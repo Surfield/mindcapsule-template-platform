@@ -44,10 +44,16 @@ export default function SignInPage() {
     setLoading(true);
     setError("");
 
-    await signIn.social({
-      provider: "google",
-      callbackURL: `${window.location.origin}/dashboard`,
-    });
+    try {
+      await signIn.social({
+        provider: "google",
+        callbackURL: `${window.location.origin}/dashboard/students`,
+      });
+    } catch (err) {
+      console.error("Sign-in error:", err);
+      setError("Failed to sign in with Google");
+      setLoading(false);
+    }
   };
 
   return (

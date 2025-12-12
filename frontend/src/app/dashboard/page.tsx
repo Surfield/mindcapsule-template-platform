@@ -1,39 +1,51 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { SignOutButton } from "./sign-out-button";
+import { Suspense, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
-export default function DashboardPage() {
-  const { data: session, isPending } = useSession();
+function DashboardContent() {
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const error = searchParams.get("error");
+  const errorDescription = searchParams.get("error_description");
 
   useEffect(() => {
-    if (!isPending && !session) {
-      router.push("/");
+    if (!error) {
+      router.push("/dashboard/students");
     }
-  }, [session, isPending, router]);
+  }, [error, router]);
 
-  if (isPending) {
+  if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p>Loading...</p>
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600">Authentication Error</h1>
+          <p className="mt-2 text-gray-600">{error}</p>
+          {errorDescription && (
+            <p className="mt-1 text-sm text-gray-500">{errorDescription}</p>
+          )}
+          <button
+            onClick={() => router.push("/")}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Back to Sign In
+          </button>
+        </div>
       </div>
     );
   }
 
-  if (!session) {
-    return null;
-  }
-
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
-      <p className="text-muted-foreground">
-        Welcome, {session.user.name || session.user.email}!
-      </p>
-      <SignOutButton />
+    <div className="flex min-h-screen items-center justify-center">
+      <p>Redirecting...</p>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center"><p>Loading...</p></div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }

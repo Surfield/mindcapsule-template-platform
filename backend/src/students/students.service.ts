@@ -10,7 +10,8 @@ export class StudentsService {
 
     // Auto-generate email: sat+<lowercase firstname><first initial of lastname>@homeworkhelperstutoring.com
     const email =
-      createStudentDto.email.toLowerCase();
+      createStudentDto.email;
+
     // Auto-generate password: Homework_<Capitalized firstname>1!
     const password =
       createStudentDto.password;
