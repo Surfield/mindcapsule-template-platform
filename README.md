@@ -19,19 +19,19 @@ This template includes a fully functional tutoring company admin dashboard as a 
 
 ### Frontend
 
-| Technology                   | Version | Purpose                                               |
-| ---------------------------- | ------- | ----------------------------------------------------- |
-| **Next.js**                  | 16.0.7  | React framework with App Router and Server Components |
-| **React**                    | 19.2.0  | UI library                                            |
-| **TypeScript**               | 5.x     | Type-safe JavaScript                                  |
-| **Tailwind CSS**             | 4.0     | Utility-first CSS framework                           |
-| **Radix UI**                 | Latest  | Accessible, unstyled UI primitives                    |
-| **Lucide React**             | 0.556.0 | Icon library                                          |
-| **better-auth**              | 1.4.5   | Authentication client                                 |
-| **Class Variance Authority** | 0.7.1   | Component variant management                          |
-| **clsx**                     | 2.1.1   | Conditional class names                               |
-| **tailwind-merge**           | 3.4.0   | Merge Tailwind classes                                |
-| **PostHog**                  | Latest  | Product analytics and event tracking                  |
+| Technology                   | Version | Purpose                                                                                                                                                |
+| ---------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Next.js**                  | 16.0.7  | React framework with App Router and Server Components                                                                                                  |
+| **React**                    | 19.2.3  | UI library (Patched for https://semgrep.dev/blog/2025/new-react2shell-offspring-patched-react-server-components-dos-and-source-code-exposure/ exploit) |
+| **TypeScript**               | 5.x     | Type-safe JavaScript                                                                                                                                   |
+| **Tailwind CSS**             | 4.0     | Utility-first CSS framework                                                                                                                            |
+| **Radix UI**                 | Latest  | Accessible, unstyled UI primitives                                                                                                                     |
+| **Lucide React**             | 0.556.0 | Icon library                                                                                                                                           |
+| **better-auth**              | 1.4.5   | Authentication client                                                                                                                                  |
+| **Class Variance Authority** | 0.7.1   | Component variant management                                                                                                                           |
+| **clsx**                     | 2.1.1   | Conditional class names                                                                                                                                |
+| **tailwind-merge**           | 3.4.0   | Merge Tailwind classes                                                                                                                                 |
+| **PostHog**                  | Latest  | Product analytics and event tracking                                                                                                                   |
 
 #### Frontend Structure
 
@@ -164,7 +164,7 @@ Authentication is configured in `backend/src/auth.ts`:
 
 ```typescript
 export const auth = betterAuth({
-  baseURL: process.env.FRONTEND_URL || "http://localhost:3000",
+  baseURL: process.env.FRONTEND_URL || 'http://localhost:3000',
   database: prismaAdapter(prisma, { provider: 'postgresql' }),
   emailAndPassword: { enabled: false }, // Enable if needed
   socialProviders: {
@@ -436,10 +436,10 @@ Edit `frontend/src/components/dashboard/sidebar.tsx` to add new navigation items
 
 ### Frontend
 
-| Variable                   | Required | Description                                      |
-| -------------------------- | -------- | ------------------------------------------------ |
-| `NEXT_PUBLIC_API_URL`      | Yes      | Backend API URL                                  |
-| `NEXT_PUBLIC_POSTHOG_KEY`  | Yes      | PostHog project API key for analytics            |
+| Variable                   | Required | Description                                          |
+| -------------------------- | -------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`      | Yes      | Backend API URL                                      |
+| `NEXT_PUBLIC_POSTHOG_KEY`  | Yes      | PostHog project API key for analytics                |
 | `NEXT_PUBLIC_POSTHOG_HOST` | No       | PostHog host URL (default: https://us.i.posthog.com) |
 
 ---
