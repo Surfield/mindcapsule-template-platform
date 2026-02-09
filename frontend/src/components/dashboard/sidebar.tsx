@@ -3,28 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { DollarSign, FileText, Users, TrendingUp, Handshake } from "lucide-react";
+import { FileText, TrendingUp, Handshake } from "lucide-react";
 
 type Role = "admin" | "user" | "tutor";
 
 const navItems = [
   {
-    title: "Payment Sheet",
-    href: "/dashboard/payment-sheet",
-    icon: DollarSign,
-    roles: ["admin", "user"] as Role[],
-  },
-  {
     title: "Recap",
     href: "/dashboard/recap",
     icon: FileText,
     roles: ["admin", "user"] as Role[],
-  },
-  {
-    title: "Students",
-    href: "/dashboard/students",
-    icon: Users,
-    roles: ["admin", "user", "tutor"] as Role[],
   },
   {
     title: "Revenue",

@@ -9,18 +9,17 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String   @id @default(cuid())
   name          String?
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String   @unique
+  emailVerified Boolean  @default(false)
   image         String?
-  role          String    @default("tutor")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  role          String   @default("tutor")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   sessions Session[]
   accounts Account[]
-  payments Payment[]
 
   @@map("user")
 }
@@ -68,34 +67,4 @@ model Verification {
   updatedAt  DateTime @updatedAt
 
   @@map("verification")
-}
-
-model Payment {
-  id        String   @id @default(cuid())
-  date      DateTime @db.Date
-  time      String
-  name      String
-  amount    Decimal  @db.Decimal(10, 2)
-  paid      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  createdById String
-  createdBy   User   @relation(fields: [createdById], references: [id])
-
-  @@map("payment")
-}
-
-model Student {
-  id           String   @id @default(cuid())
-  firstName    String
-  lastName     String
-  email        String   @unique
-  password     String
-  onePrep      Boolean  @default(false)
-  onlineCourse Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@map("student")
 }

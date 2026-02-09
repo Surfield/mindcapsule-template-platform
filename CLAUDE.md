@@ -35,6 +35,7 @@ This is a full-stack web application template (Mindcapsule Template Platform) wi
 ## Common Commands
 
 ### Frontend (run from `/frontend`)
+
 ```bash
 npm run dev          # Start development server (port 3000)
 npm run build        # Production build
@@ -42,8 +43,9 @@ npm run lint         # Run ESLint
 ```
 
 ### Backend (run from `/backend`)
+
 ```bash
-npm run start:dev    # Start development server with hot reload (port 3001)
+npm run start:dev    # Start development server with hot reload (port 3005)
 npm run build        # Production build
 npm run start:prod   # Start production server
 npm run lint         # Run ESLint
@@ -52,6 +54,7 @@ npm run test:e2e     # Run end-to-end tests
 ```
 
 ### Database (run from `/backend`)
+
 ```bash
 npx prisma migrate dev      # Run migrations in development
 npx prisma migrate deploy   # Run migrations in production
@@ -63,6 +66,7 @@ npx prisma db push          # Push schema changes without migration
 ## Architecture Guidelines
 
 ### Adding a New Backend Module
+
 1. Create module directory in `backend/src/<module-name>/`
 2. Create files: `<module>.module.ts`, `<module>.controller.ts`, `<module>.service.ts`
 3. Create DTOs in `dto/` subdirectory
@@ -70,17 +74,20 @@ npx prisma db push          # Push schema changes without migration
 5. Add Prisma model in `prisma/schema.prisma` if needed
 
 ### Adding a New Frontend Page
+
 1. Create page in `frontend/src/app/<route>/page.tsx`
 2. Use existing components from `src/components/ui/`
 3. Protected routes go under `src/app/dashboard/`
 
 ### Authentication
+
 - Backend auth config: `backend/src/auth.ts`
 - Frontend auth client: `frontend/src/lib/auth-client.ts`
 - Route protection: `frontend/src/middleware.ts`
 - Auth endpoints are handled by better-auth at `/api/auth/*`
 
 ### Database Changes
+
 1. Modify `backend/prisma/schema.prisma`
 2. Run `npx prisma migrate dev --name <migration-name>`
 3. Prisma client is auto-regenerated
@@ -88,13 +95,15 @@ npx prisma db push          # Push schema changes without migration
 ## Environment Variables
 
 ### Backend (`backend/.env`)
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `BETTER_AUTH_SECRET` - Auth secret key
 - `GOOGLE_CLIENT_ID` - Google OAuth client ID
 - `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
 
 ### Frontend (`frontend/.env.local`)
-- `NEXT_PUBLIC_API_URL` - Backend API URL (default: http://localhost:3001)
+
+- `NEXT_PUBLIC_API_URL` - Backend API URL (default: http://localhost:3005)
 - `NEXT_PUBLIC_POSTHOG_KEY` - PostHog project key
 - `NEXT_PUBLIC_POSTHOG_HOST` - PostHog host URL
 

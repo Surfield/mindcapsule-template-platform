@@ -47,7 +47,7 @@ export default function SignInPage() {
     try {
       await signIn.social({
         provider: "google",
-        callbackURL: `${window.location.origin}/dashboard/students`,
+        callbackURL: `${window.location.origin}/dashboard/recap`,
       });
     } catch (err) {
       console.error("Sign-in error:", err);

@@ -174,8 +174,8 @@ export const auth = betterAuth({
     },
   },
   trustedOrigins: [
-    process.env.FRONTEND_URL || 'http://localhost:3000',
-    process.env.BACKEND_URL || 'http://localhost:3001',
+    process.env.FRONTEND_URL || 'http://localhost:3004',
+    process.env.BACKEND_URL || 'http://localhost:3005',
   ],
   user: {
     additionalFields: {
@@ -287,10 +287,10 @@ Configure your `.env.local`:
 DATABASE_URL="postgresql://user:password@localhost:5432/myapp"
 
 # Server
-PORT=3001
+PORT=3005
 NODE_ENV=development
-BACKEND_URL="http://localhost:3001"
-FRONTEND_URL="http://localhost:3000"
+BACKEND_URL="http://localhost:3005"
+FRONTEND_URL="http://localhost:3004"
 
 # Authentication
 BETTER_AUTH_SECRET="your-random-secret-key"
@@ -319,7 +319,7 @@ npm install
 
 # Create .env.local with required variables
 cat > .env.local << 'EOF'
-NEXT_PUBLIC_API_URL="http://localhost:3001"
+NEXT_PUBLIC_API_URL="http://localhost:3005"
 NEXT_PUBLIC_POSTHOG_KEY="your-posthog-project-api-key"
 NEXT_PUBLIC_POSTHOG_HOST="https://us.i.posthog.com"
 EOF
@@ -331,7 +331,7 @@ npm run dev
 ### 4. Access the Application
 
 - **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:3001
+- **Backend API:** http://localhost:3005
 
 ---
 
@@ -426,7 +426,7 @@ Edit `frontend/src/components/dashboard/sidebar.tsx` to add new navigation items
 | Variable               | Required | Description                          |
 | ---------------------- | -------- | ------------------------------------ |
 | `DATABASE_URL`         | Yes      | PostgreSQL connection string         |
-| `PORT`                 | No       | Server port (default: 3001)          |
+| `PORT`                 | No       | Server port (default: 3005)          |
 | `NODE_ENV`             | No       | Environment (development/production) |
 | `BACKEND_URL`          | Yes      | Backend server URL                   |
 | `FRONTEND_URL`         | Yes      | Frontend URL for CORS                |

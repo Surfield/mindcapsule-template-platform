@@ -22,8 +22,8 @@ export const auth = betterAuth({
     },
   },
   trustedOrigins: [
-    process.env.FRONTEND_URL || "http://localhost:3000",
-    process.env.BACKEND_URL || "http://localhost:3001",
+    process.env.FRONTEND_URL || "http://localhost:3004",
+    process.env.BACKEND_URL || "http://localhost:3005",
   ],
   advanced: {
     // Disable __Secure- prefix which can cause issues with state cookies
