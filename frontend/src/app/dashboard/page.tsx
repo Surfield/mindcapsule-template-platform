@@ -11,7 +11,7 @@ function DashboardContent() {
 
   useEffect(() => {
     if (!error) {
-      router.push("/dashboard/recap");
+      router.push("/dashboard/main");
     }
   }, [error, router]);
 

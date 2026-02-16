@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -12,33 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter();
-
-  const handleEmailSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    const { error } = await signIn.email({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message || "Failed to sign in");
-      setLoading(false);
-      return;
-    }
-
-    router.push("/dashboard");
-  };
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
@@ -47,7 +22,7 @@ export default function SignInPage() {
     try {
       await signIn.social({
         provider: "google",
-        callbackURL: `${window.location.origin}/dashboard/recap`,
+        callbackURL: `${window.location.origin}/dashboard/students`,
       });
     } catch (err) {
       console.error("Sign-in error:", err);
@@ -66,47 +41,9 @@ export default function SignInPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form onSubmit={handleEmailSignIn} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="admin@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            {error && (
-              <p className="text-sm text-red-500">{error}</p>
-            )}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
-            </Button>
-          </form>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-
+          {error && (
+            <p className="text-sm text-red-500 text-center">{error}</p>
+          )}
           <Button
             variant="outline"
             className="w-full"
@@ -131,7 +68,7 @@ export default function SignInPage() {
                 fill="#EA4335"
               />
             </svg>
-            Continue with Google
+            {loading ? "Signing in..." : "Continue with Google"}
           </Button>
         </CardContent>
       </Card>

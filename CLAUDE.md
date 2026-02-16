@@ -4,113 +4,89 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a full-stack web application template (Mindcapsule Template Platform) with a Next.js frontend and NestJS backend. The example implementation is a tutoring company admin dashboard.
-
-## Tech Stack
-
-- **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/ui, Radix UI
-- **Backend:** NestJS 11, TypeScript, Prisma 7.1, PostgreSQL
-- **Auth:** better-auth (Google OAuth + Email/Password)
-- **Analytics:** PostHog
-
-## Project Structure
+Homework Helpers Admin - a monorepo with a Next.js frontend and NestJS backend for managing tutoring students and payments.
 
 ```
-├── frontend/                 # Next.js application
-│   ├── src/app/             # App Router pages
-│   ├── src/components/      # React components (ui/ for shadcn)
-│   ├── src/lib/             # Utilities and auth client
-│   └── src/middleware.ts    # Route protection
-│
-├── backend/                  # NestJS application
-│   ├── src/                 # Application modules
-│   │   ├── auth.ts          # better-auth configuration
-│   │   ├── prisma.ts        # Prisma client instance
-│   │   ├── payments/        # Example module
-│   │   └── students/        # Example module
-│   └── prisma/
-│       └── schema.prisma    # Database schema
+/admin/
+├── frontend/    # Next.js 16 + React 19 (port 3000)
+└── backend/     # NestJS 11 + Prisma 7 (port 3001)
 ```
 
-## Common Commands
+## Commands
 
-### Frontend (run from `/frontend`)
-
+### Frontend
 ```bash
-npm run dev          # Start development server (port 3000)
-npm run build        # Production build
-npm run lint         # Run ESLint
+cd frontend
+npm run dev      # Start dev server
+npm run build    # Production build
+npm run lint     # ESLint
 ```
 
-### Backend (run from `/backend`)
-
+### Backend
 ```bash
-npm run start:dev    # Start development server with hot reload (port 3005)
-npm run build        # Production build
-npm run start:prod   # Start production server
-npm run lint         # Run ESLint
-npm run test         # Run unit tests
-npm run test:e2e     # Run end-to-end tests
+cd backend
+npm run start:dev    # Dev server with watch
+npm run build        # Prisma generate + NestJS compile
+npm run test         # Jest unit tests
+npm run test:e2e     # End-to-end tests
+npm run db:migrate   # Run migrations
+npm run db:generate  # Generate Prisma client
 ```
 
-### Database (run from `/backend`)
+**Important**: For schema changes, always use `npm run db:migrate && npm run db:generate`. Never use `npx prisma db push`.
 
-```bash
-npx prisma migrate dev      # Run migrations in development
-npx prisma migrate deploy   # Run migrations in production
-npx prisma generate         # Regenerate Prisma client
-npx prisma studio           # Open Prisma Studio GUI
-npx prisma db push          # Push schema changes without migration
-```
+## Database Commands - NEVER RUN
 
-## Architecture Guidelines
+**CRITICAL**: Never execute any database commands directly. This includes:
+- `npm run db:migrate`
+- `npm run db:generate`
+- `npx prisma migrate`
+- `npx prisma db push`
+- Any other Prisma CLI commands
 
-### Adding a New Backend Module
+Instead, when database changes are needed:
+1. Make the schema changes to `backend/prisma/schema.prisma`
+2. Tell the user what commands to run and let them execute manually
+3. Wait for confirmation before proceeding
 
-1. Create module directory in `backend/src/<module-name>/`
-2. Create files: `<module>.module.ts`, `<module>.controller.ts`, `<module>.service.ts`
-3. Create DTOs in `dto/` subdirectory
-4. Register module in `app.module.ts`
-5. Add Prisma model in `prisma/schema.prisma` if needed
+This allows the user to review all database changes before they are applied.
 
-### Adding a New Frontend Page
+## Architecture
 
-1. Create page in `frontend/src/app/<route>/page.tsx`
-2. Use existing components from `src/components/ui/`
-3. Protected routes go under `src/app/dashboard/`
+### API Communication
+Frontend proxies all API calls through Next.js rewrites to avoid CORS/cookie issues:
+- `/api/auth/*` → Backend `/api/auth/*` (auth routes)
+- `/api/*` → Backend `/*` (all other routes)
+
+Client code should use relative paths like `/api/payments` instead of direct backend URLs.
 
 ### Authentication
+- **Library**: Better Auth with Google OAuth (email/password disabled)
+- **Backend**: Global `AuthGuard` protects all routes, use `@Session()` decorator for user session
+- **Frontend**: Middleware in `src/middleware.ts` protects `/dashboard/*` routes
+- **Cookies**: HTTP-only session cookies (`better-auth.session_token`)
 
-- Backend auth config: `backend/src/auth.ts`
-- Frontend auth client: `frontend/src/lib/auth-client.ts`
-- Route protection: `frontend/src/middleware.ts`
-- Auth endpoints are handled by better-auth at `/api/auth/*`
+### Database
+- **ORM**: Prisma with PostgreSQL
+- **Schema**: `backend/prisma/schema.prisma`
+- **Generated client**: `backend/generated/prisma` (CommonJS)
 
-### Database Changes
+**Models**: User, Session, Account, Verification (auth), Payment, Student (business)
 
-1. Modify `backend/prisma/schema.prisma`
-2. Run `npx prisma migrate dev --name <migration-name>`
-3. Prisma client is auto-regenerated
+### Key Files
+- `backend/src/auth.ts` - Better Auth configuration
+- `backend/src/app.module.ts` - NestJS modules and global guard
+- `frontend/next.config.ts` - API proxy rewrites
+- `frontend/src/middleware.ts` - Route protection
+- `frontend/src/lib/auth-client.ts` - Frontend auth client
 
 ## Environment Variables
 
-### Backend (`backend/.env`)
+### Backend
+- `DATABASE_URL` - PostgreSQL connection
+- `BETTER_AUTH_SECRET` - Session encryption
+- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` - OAuth
+- `FRONTEND_URL` - For CORS and callbacks
 
-- `DATABASE_URL` - PostgreSQL connection string
-- `BETTER_AUTH_SECRET` - Auth secret key
-- `GOOGLE_CLIENT_ID` - Google OAuth client ID
-- `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
-
-### Frontend (`frontend/.env.local`)
-
-- `NEXT_PUBLIC_API_URL` - Backend API URL (default: http://localhost:3005)
-- `NEXT_PUBLIC_POSTHOG_KEY` - PostHog project key
-- `NEXT_PUBLIC_POSTHOG_HOST` - PostHog host URL
-
-## Code Style
-
-- Use TypeScript strict mode
-- Follow ESLint and Prettier configurations
-- Use named exports for components
-- Use Tailwind CSS for styling (no inline styles)
-- DTOs should use class-validator decorators in backend
+### Frontend
+- `NEXT_PUBLIC_API_URL` - Backend URL (default: http://localhost:3001)

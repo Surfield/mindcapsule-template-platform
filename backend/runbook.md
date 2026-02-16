@@ -9,7 +9,7 @@
    npm run db:migrate
 4. Start the apps:
 
-# Backend (port 3005)
+# Backend (port 3001)
 
 cd backend && npm run start:dev
 
@@ -70,10 +70,10 @@ To Get Started
    npm run db:migrate
 3. Start the apps:
 
-# Backend (port 3005)
+# Backend (port 3001)
 
 cd backend && npm run start:dev
 
-# Frontend (port 3004)
+# Frontend (port 3000)
 
 cd frontend && npm run dev

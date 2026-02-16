@@ -3,27 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { FileText, TrendingUp, Handshake } from "lucide-react";
+import { Activity, UserCog } from "lucide-react";
 
-type Role = "admin" | "user" | "tutor";
+type Role = "admin" | "user";
 
 const navItems = [
   {
-    title: "Recap",
-    href: "/dashboard/recap",
-    icon: FileText,
+    title: "MainScreen",
+    href: "/dashboard/main",
+    icon: Activity,
     roles: ["admin", "user"] as Role[],
   },
   {
-    title: "Revenue",
-    href: "/dashboard/revenue",
-    icon: TrendingUp,
-    roles: ["admin"] as Role[],
-  },
-  {
-    title: "Sponsorships",
-    href: "/dashboard/sponsorships",
-    icon: Handshake,
+    title: "Users",
+    href: "/dashboard/users",
+    icon: UserCog,
     roles: ["admin"] as Role[],
   },
 ];
@@ -32,7 +26,7 @@ interface SidebarProps {
   role?: string;
 }
 
-export function Sidebar({ role = "tutor" }: SidebarProps) {
+export function Sidebar({ role = "user" }: SidebarProps) {
   const pathname = usePathname();
 
   const visibleItems = navItems.filter((item) =>

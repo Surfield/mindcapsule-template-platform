@@ -1,6 +1,3 @@
--- CreateSchema
-CREATE SCHEMA IF NOT EXISTS "public";
-
 -- CreateTable
 CREATE TABLE "user" (
     "id" TEXT NOT NULL,
@@ -8,7 +5,7 @@ CREATE TABLE "user" (
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "image" TEXT,
-    "role" TEXT NOT NULL DEFAULT 'tutor',
+    "role" TEXT NOT NULL DEFAULT 'admin',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -71,4 +68,3 @@ ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "account" ADD CONSTRAINT "account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
